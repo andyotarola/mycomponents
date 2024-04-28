@@ -76,6 +76,10 @@ jobs:
   release:
     needs: [test]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -93,10 +97,11 @@ jobs:
         with:
           name: dist
           path: dist
-      - name: release
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
       
-  
   deploy:
     needs: [test]
     runs-on: ubuntu-latest
